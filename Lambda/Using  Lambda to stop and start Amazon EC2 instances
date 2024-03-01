@@ -1,0 +1,69 @@
+Automatically  stopping /starting ec2 instances for Saving cost optimization
+
+Using  Lambda to stop and start Amazon EC2 instances 
+
+1.Create a custom AWS Identity and Access Management (IAM) policy 
+
+JSON policy
+
+{  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+      ],
+      "Resource": "arn:aws:logs:*:*:*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "ec2:Start*",
+        "ec2:Stop*"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
+
+2.Create IAM role.
+Attach a permissions policy to Lambda, make sure that you choose the IAM policy.
+
+3.Create Lambda functions that stop and start your EC2 instances.
+
+Ec2-Start_intances
+
+import json
+import boto3
+
+ec2 = boto3.resource('ec2', region_name='us-east-1')
+def lambda_handler(event, context):
+   instances = ec2.instances.filter(Filters=[{'Name': 'instance-state-name', 'Values': ['stopped']},{'Name': 'tag:auto-start-stop','Values':['Yes']}])
+   for instance in instances:
+       id=instance.id
+       ec2.instances.filter(InstanceIds=[id]).start()
+       print("Instance ID is started:- "+instance.id)
+   return "success"
+
+
+
+Ec2-Stop_intances
+import json
+import boto3
+
+ec2 = boto3.resource('ec2', region_name='us-east-1')
+def lambda_handler(event, context):
+   instances = ec2.instances.filter(Filters=[{'Name': 'instance-state-name', 'Values': ['running']},{'Name': 'tag:auto-start-stop','Values':['Yes']}])
+   for instance in instances:
+       id=instance.id
+       ec2.instances.filter(InstanceIds=[id]).stop()
+       print("Instance ID is stopped:- "+instance.id)
+   return "success"
+
+
+4.	Save the lambda function deploy and Test  Lambda functions.
+5.	Check the status of your instances
+6.	Create Event Bridge rules that run your Lambda functions
+
