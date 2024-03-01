@@ -1,0 +1,6 @@
+Webserver :Apache 
+Ports: 22(ssh) ,http (80), https (443)
+Region :us-east-1
+OS-Type: Linux
+Cloud: AWS
+Service: httpd
