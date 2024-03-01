@@ -1,12 +1,12 @@
 Terraform installation (LINUX)
 
-1.	Create a directory 
+1.Create a directory 
 mkdir learn-terraform-docker-container
 
-2.	Navigate into the working directory
+2.Navigate into the working directory
 cd learn-terraform-docker-container
 
-3.	Create a file main.tf and paste the below code
+3.Create a file main.tf and paste the below code
 
 vi main.tf
 
