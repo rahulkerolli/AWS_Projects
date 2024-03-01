@@ -1,5 +1,3 @@
-# --- root/Terraform_projects/terraform_two_tier_architecture/main.tf
-
 # ************************************************************
 # Description: two-tier architecture with terraform
 # - file name: main.tf
